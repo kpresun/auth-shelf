@@ -31,7 +31,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
   VALUES ($1, $2, $3)
   RETURNING id;
   `;
-  pool.query(query, [req.body.description, req.body.image_url, req.user])
+  pool.query(query, [req.body.description, req.body.image_url, req.user.id])
   .then (dbResponse => {
     console.log('New shelf item:', dbResponse.rows);
     res.sendStatus(201);

@@ -18,8 +18,9 @@ const handleSubmit = (event) => {
     // Don't reload on form submit
     event.preventDefault();
 
-   // alert user to fill in missing input field
+    console.log('Item is:', description, imageURL);
 
+   // alert user to fill in missing input field
    if (!description || !imageURL) {
     alert('Please enter all input fields.')
     }
@@ -29,7 +30,7 @@ const handleSubmit = (event) => {
     dispatch({
         type: 'ADD_ITEM',
         // Pass in the information, that we're tracking in state
-        payload: {description: description, imageURL: imageURL}
+        payload: {description: description, image_url: imageURL}
     });
 
     // Clear the form field
@@ -39,6 +40,7 @@ const handleSubmit = (event) => {
     // direct browser to next route
     // history.push('/');
     }
+}
 
 useEffect(() => {
   fetchShelf();
@@ -80,7 +82,7 @@ useEffect(() => {
                 placeholder="Enter item image URL" 
                 value={imageURL} 
                 onChange={event => setImageURL(event.target.value)}/>
-            <button type="submit">Save Movie</button>
+            <button type="submit">Add Item</button>
           </form>
         </div>
   </div>
