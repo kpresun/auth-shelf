@@ -12,7 +12,21 @@ router.get('/', (req, res) => {
 /**
  * Add an item for the logged in user to the shelf
  */
-router.post('/', (req, res) => {
+router.post('/', rejectUnauthenticated, (req, res) => {
+  console.log(req.user);
+  const query = `
+  INSERT INTO item (description, image_url, user_id)
+  VALUES ($1, $2, $3)
+  RETURNING id;
+  `;
+  pool.query(query, [req.body.description, req.body.image_url, req.user])
+  .then (dbResponse => {
+    console.log('New shelf item:', dbResponse.rows);
+    res.sendStatus(201);
+  })
+  .catch( err => {
+    console.log('Error posting new shelf item', err);
+  })
   // endpoint functionality
 });
 
