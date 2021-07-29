@@ -42,6 +42,10 @@ const handleSubmit = (event) => {
     }
 }
 
+const handleDelete = (idNum) => {
+    dispatch({ type: 'DELETE_ITEM', payload: idNum });
+}
+
 useEffect(() => {
   fetchShelf();
 }, []);
@@ -59,6 +63,9 @@ useEffect(() => {
             <th>
               Image
             </th>
+            <th>
+              Delete
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -67,6 +74,7 @@ useEffect(() => {
               <tr key={index}>
                 <td>{item.description}</td>
                 <td><img src={item.image_url} height="200px" /></td>
+                <td><button onClick={() => handleDelete(item.id)} >Delete</button></td>
               </tr>
             )
           })}
