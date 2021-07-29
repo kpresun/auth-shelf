@@ -1,16 +1,20 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-
-
+import { useHistory } from "react-router-dom";
 
 function ShelfPage() {
 
-  const [description, setDescription] = useState('');
-  const [imageURL, setImageURL] = useState('');
+const shelf = useSelector(store => store.shelfReducer);
+const dispatch = useDispatch();
+const [description, setDescription] = useState('');
+const [imageURL, setImageURL] = useState('');
 
-  const handleSubmit = (event) => {
+const fetchShelf = () => {
+  dispatch({ type: 'FETCH_SHELF'});
+}
+
+const handleSubmit = (event) => {
     // Don't reload on form submit
     event.preventDefault();
 
@@ -35,27 +39,50 @@ function ShelfPage() {
     // direct browser to next route
     // history.push('/');
     }
-};
+
+useEffect(() => {
+  fetchShelf();
+}, []);
 
   return (
     <div className="container">
-      <div>
-        <h2>Shelf</h2>
-        <p>All of the available items can be seen here.</p>
-      </div>
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" 
-            placeholder="Enter Description" 
-            value={description} 
-            onChange={event => setDescription(event.target.value)}/>
-        <input type="text" 
-            placeholder="Enter item image URL" 
-            value={imageURL} 
-            onChange={event => setImageURL(event.target.value)}/>
-        <button type="submit">Save Movie</button>
-      </form>
-    </div>
+      <h2>Shelf</h2>
+      <p>All of the available items can be seen here.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Description
+            </th>
+            <th>
+              Image
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {shelf.map((item, index) => {
+            return (
+              <tr key={index}>
+                <td>{item.description}</td>
+                <td><img src={item.image_url} height="200px" /></td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+        <div>
+          <form onSubmit={handleSubmit}>
+            <input type="text" 
+                placeholder="Enter Description" 
+                value={description} 
+                onChange={event => setDescription(event.target.value)}/>
+            <input type="text" 
+                placeholder="Enter item image URL" 
+                value={imageURL} 
+                onChange={event => setImageURL(event.target.value)}/>
+            <button type="submit">Save Movie</button>
+          </form>
+        </div>
   </div>
   );
 }

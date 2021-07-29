@@ -10,8 +10,18 @@ function* addShelf(action){
     }
 }
 
+function* fetchShelf(action) {
+    try {
+        const shelfItems = yield axios.get('/api/shelf');
+        yield put({ type: 'SET_SHELF', payload: shelfItems.data})
+    } catch (error) {
+        console.log('unable to retrieve shelf items:', error);
+    }
+}
+
 function* shelfSaga() {
-    yield takeLatest('ADD_ITEM', addShelf);
-  }
+   yield takeLatest('FETCH_SHELF', fetchShelf);
+   yield takeLatest('ADD_ITEM', addShelf);
+}
 
 export default shelfSaga;
