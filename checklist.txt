@@ -1,0 +1,3 @@
+[x] Display all Items
+[] Add items to the shelf
+[] Delete items from the shelf
