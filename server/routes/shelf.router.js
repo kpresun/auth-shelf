@@ -83,7 +83,17 @@ router.get('/count', (req, res) => {
  * Return a specific item by id
  */
 router.get('/:id', (req, res) => {
-  // endpoint functionality
-});
+  console.log(req.params);
+  const query = `
+  SELECT * FROM item WHERE user_id=$1;
+  `;
+  pool.query(query, [req.params.id])
+  .then ( dbResponse => {
+    res.send(dbResponse.rows);
+  })
+  .catch (err => {
+    res.sendStatus(500);
+  });
+})
 
 module.exports = router;
